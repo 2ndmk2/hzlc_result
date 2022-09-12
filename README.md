@@ -1,5 +1,5 @@
-# georadial
-Estimating radial profile & geometry for proto-planetary disks in ALMA 
+# hzlc_result
+Analyzing hzlc data 
 
 ## Install 
 For normal install, 
