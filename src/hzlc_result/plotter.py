@@ -1,9 +1,9 @@
-import read_output
+from hzlc_result import read_output
 import lightkurve as lk
 import astropy.units as u
 import numpy as np
 import astropy
-import lc_operation
+from hzlc_result import lc_operation
 import matplotlib.pyplot as plt
 import os
 

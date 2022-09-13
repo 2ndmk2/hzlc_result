@@ -1,4 +1,4 @@
-import read_output
+from hzlc_result import read_output
 import lightkurve as lk
 import astropy.units as u
 import numpy as np

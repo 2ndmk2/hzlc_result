@@ -8,7 +8,7 @@ from lightkurve import search_targetpixelfile
 from astropy.io import fits
 import matplotlib.pyplot as plt
 import numpy as np
-import read_output
+from hzlc_result import read_output
 from astropy.time import Time
 from matplotlib.animation import FuncAnimation
 from IPython.display import HTML
@@ -16,7 +16,7 @@ import astropy.units as u
 from astropy.coordinates import SkyCoord
 from astroquery.gaia import Gaia
 import os
-import load_data
+from hzlc_result import load_data
 
 
 def take_gaia_stars(ra_now, dec_now):

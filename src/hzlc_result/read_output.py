@@ -9,7 +9,7 @@ import numpy as np
 import pandas as pd
 from astropy import units as u
 from astropy.coordinates import SkyCoord
-import utils
+from hzlc_result import utils
 from matplotlib.animation import FuncAnimation
 from IPython.display import HTML
 from bokeh.plotting import figure, output_file, show, reset_output, output_notebook
