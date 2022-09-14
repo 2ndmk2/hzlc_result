@@ -13,7 +13,6 @@ def plot_lc_for_model_data(time, flux, flux_err, hpdi_muy, mean_muy, folder_for_
         os.makedirs(folder_for_fig)
 
     fontsize_plot = 32
-    #fontsize_plot = 28
     fontsize_legend = 24
     fontsize_ticks = 24
     figsize = (14, 10)
@@ -181,5 +180,58 @@ def plot_lc_for_TIC3585(time, flux, flux_err, hpdi_muy, mean_muy, file_name, xli
     """
     plt.savefig(file_name, bbox_inches="tight")
     plt.show()
+def plot_HR_diagram(df_catalog_target):
+    list_of_gabs, list_of_gbp_grp = get_gmag_and_color(df_catalog_target)
 
+    fig = plt.figure(figsize=(8, 8)) 
+    ax = fig.add_subplot(111) 
+    ax.set(xlabel='$G_{BP}-G_{RP}$', ylabel='$G_{abs} [mag]$', title='GaiaDR2 HR diagram') 
+    ax.set_xlim(-1,5)
+    ax.set_ylim(16,-3)
 
+    plt.scatter(list_of_gbp_grp, list_of_gabs, alpha = 0.5)
+    plt.grid(True)
+    plt.show()
+    
+def plot_skymap_equatorial(df_catalog_target):
+    ra_target = np.array(df_catalog_target['ra'])*u.degree
+    dec_target = np.array(df_catalog_target['dec'])*u.degree
+    c_target = SkyCoord(ra=ra_target, dec=dec_target, frame='icrs')
+    
+    ra_rad_target = c_target.ra.wrap_at(180*u.deg).radian
+    dec_rad_target = c_target.dec.radian
+        
+    plt.figure(figsize=(15,7.5))
+    plt.subplot(111, projection="mollweide")
+    plt.grid(True,linestyle='dotted')
+    plt.scatter(ra_rad_target, dec_rad_target, alpha=0.5)
+    plt.subplots_adjust(top=0.95,bottom=0.0)
+    
+    gp = SkyCoord(l = np.linspace(-62.5, 295,100)*u.degree, b= np.linspace(0, 0, 100)*u.degree, frame='galactic')
+    gp_icrs = gp.transform_to('icrs')
+    ra_gp = gp_icrs.ra.wrap_at(180*u.deg).radian
+    dec_gp = gp_icrs.dec.radian
+    plt.title('Equatorial coordinte')
+    plt.plot(ra_gp,dec_gp,c='gray',linestyle = 'dashed')
+    plt.show()
+
+    
+def plot_skymap_galactic(df_catalog_target):
+    ra_target = np.array(df_catalog_target['ra'])*u.degree
+    dec_target = np.array(df_catalog_target['dec'])*u.degree
+    c_target = SkyCoord(ra=ra_target, dec=dec_target, frame='icrs')
+    c_target = c_target.transform_to('galactic')
+
+    ra_rad_target = c_target.l.wrap_at(180*u.deg).radian
+    dec_rad_target = c_target.b.radian
+
+    plt.figure(figsize=(15,7.5))
+    plt.subplot(111, projection="mollweide")
+    plt.grid(True,linestyle='dotted')
+    plt.scatter(ra_rad_target, dec_rad_target, alpha=0.5)
+    plt.subplots_adjust(top=0.95,bottom=0.0)
+
+    gp = SkyCoord(l = np.linspace(-180, 180, 128)*u.degree, b= np.linspace(0, 0, 128)*u.degree, frame='galactic')
+    plt.title('Galactic coordinte')
+    plt.plot(gp.l.wrap_at(180*u.deg).radian,gp.b.radian,c='gray',linestyle='dotted')
+    plt.show()
