@@ -130,4 +130,21 @@ def load_csv_for_params(file_name):
     ED= df["ED"].values
     return tic_ids, t_rise, t_peak, f_peak, t_1_2_decay, t_ratio, t_1_2_decay_2, fraction, t_peak_duration, flare_count, ED
 
+def get_complete_source_ids(df_catalog_target):
+    ''' Obtain the complete source IDs from df_catalog
 
+    Args:
+        df_catalog_all_stars : 
+    
+    Returns:
+        source_ids_all : list of complete soruce IDs
+    
+    '''
+    source_ids = []
+    list_of_sourceid = np.array(df_catalog_target['source_id'])
+    list_of_catalogid = np.array(df_catalog_target['catalog_name'])
+    
+    for i in range(len(list_of_catalogid)):
+        source_ids.append(str(list_of_catalogid[i])+ '_' + str(list_of_sourceid[i]))
+
+    return source_ids

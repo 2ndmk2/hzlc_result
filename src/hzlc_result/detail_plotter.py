@@ -122,7 +122,7 @@ def movie_integrate(times, movie, count_num=10):
     return np.array(time_bin), np.array(movie_bin)
     
 
-def make_lc_plot_and_snapshot(time, lc, images, n_snap, time_range):
+def make_lc_plot_and_snapshot(time, lc, images, n_snap, time_range, t_int = 10):
     arg_int_for_lc = np.arange(len(lc))
     mask = (time > time_range[0]) *  (time < time_range[1])
     dx = (np.max(arg_int_for_lc[mask])- np.min(arg_int_for_lc[mask]))/(n_snap)
@@ -137,7 +137,7 @@ def make_lc_plot_and_snapshot(time, lc, images, n_snap, time_range):
     for i in range(n_snap):
         ax_now = plt.subplot2grid((5,n_snap), (0,i)) 
         #sub2 = fig.add_subplot(2,n_snap,i+1)
-        ax_now.imshow(images[index_for_movie[i]], vmin=vmin, vmax = vmax)
+        ax_now.imshow(np.average(images[index_for_movie[i]-int(t_int/2): index_for_movie[i]+int(t_int/2)], axis = 0), vmin=vmin, vmax = vmax)
         plt.xticks([])
         plt.yticks([])
 
@@ -154,8 +154,32 @@ def make_lc_plot_and_snapshot(time, lc, images, n_snap, time_range):
     plt.savefig('movie_lc.pdf', dpi = 100, bbox_inches = 'tight')    
     
 
-    
-    
+def make_movie(movie, times, time_consider, file_name = "anim.mp4"):
+
+    time_window = (times >time_consider[0]) * (times <time_consider[1])
+    times_for_plot = times[time_window]
+    movie_select = movie[time_window]
+    nt, nx, ny = np.shape(movie_select)
+    fig, ax = plt.subplots( )
+    im = ax.imshow(movie_select[0,:,:])
+    time_template = 'time = %.6f day'
+    time_text = ax.text(0,1.03, '', transform=ax.transAxes)
+
+    def init():
+        im.set_data(movie_select[0,:,:])
+        return (im,)
+
+    # animation function. This is called sequentially
+    def animate(i):
+        data_slice = movie_select[i,:,:]
+        im.set_data(data_slice)
+        time_text.set_text(time_template % (times_for_plot[i]))
+        return im,time_text
+
+    anim = FuncAnimation(fig, animate, init_func=init, interval=30, frames=nt, blit=True)
+    HTML(anim.to_html5_video())
+    anim.save(file_name, dpi=150, fps = 30, writer='ffmpeg',extra_args=['-vcodec', 'libx264'])
+
 
 def make_lc_plot_and_snapshot_modified(time, lc, time_bin, image_bin, n_snap, time_range, bkg = None):
     arg_int_for_lc = np.arange(len(lc))

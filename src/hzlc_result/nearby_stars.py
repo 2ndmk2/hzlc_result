@@ -486,7 +486,7 @@ def plot_bokeh(time, flux_pca, flux = None, flux_type ="",width_fig = 900, heigh
     reset_output()
 
     output_notebook()
-    
+
     TOOLTIPS = [
         ("index", "$index"),
         ("(x,y)", "($x, $y)"),

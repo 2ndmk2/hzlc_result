@@ -6,6 +6,10 @@ import astropy
 from hzlc_result import lc_operation
 import matplotlib.pyplot as plt
 import os
+from astropy.coordinates import SkyCoord  # High-level coordinates
+from astropy.coordinates import ICRS, Galactic, FK4, FK5  # Low-level frames
+from astropy.coordinates import Angle, Latitude, Longitude  # Angles
+from hzlc_result import load_data
 
 def plot_lc_for_model_data(time, flux, flux_err, hpdi_muy, mean_muy, folder_for_fig, tic_id, zoom = False, file_name = 'comp_with_model.pdf', mass =None, hpdi_muy_20 = None, xlims = None,zoom_xlim = None):
 
