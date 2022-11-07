@@ -1,7 +1,7 @@
 """
 Modules to get gaia information of particular stars
 
-Author: masa, naokawa
+Author: masa, naokawa, kashiyama
 """
 
 from astroquery.gaia import Gaia
